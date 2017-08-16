@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	"github.com/paulsevere/share/manifest"
+	"github.com/paulsevere/go-p2p/manifest"
 	"github.com/spf13/cobra"
 )
 
