@@ -15,15 +15,13 @@
 package cmd
 
 import (
-	"github.com/paulsevere/go-p2p/broadcaster"
-	"github.com/paulsevere/go-p2p/manifest"
-
+	"github.com/paulsevere/go-p2p/seeker"
 	"github.com/spf13/cobra"
 )
 
-// startCmd represents the start command
-var startCmd = &cobra.Command{
-	Use:   "start",
+// fileCmd represents the file command
+var seekCmd = &cobra.Command{
+	Use:   "seek",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
@@ -32,24 +30,22 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		m := manifest.ReadFromFile(args[0])
-		b := broadcaster.Init(m)
-		// for {
-		go b.StartRequestLoop()
-		b.FileRequests()
+		s := seeker.New("localhost:8080", "./rec.tt")
+		s.Manifest.Print()
+		s.SeekAll()
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(startCmd)
+	RootCmd.AddCommand(seekCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// startCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// fileCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// startCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// fileCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
