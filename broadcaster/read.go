@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/paulsevere/go-p2p/manifest"
+	"github.com/paulsevere/p2p/manifest"
 )
 
 func (b Broadcaster) ReadSegment(n int) []byte {

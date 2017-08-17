@@ -14,7 +14,7 @@
 
 package main
 
-import "github.com/paulsevere/go-p2p/cmd"
+import "github.com/paulsevere/p2p/cmd"
 
 func main() {
 	cmd.Execute()

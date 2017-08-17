@@ -3,9 +3,8 @@ package broadcaster
 import (
 	"encoding/gob"
 	"net"
-	"strconv"
 
-	"github.com/paulsevere/go-p2p/manifest"
+	"github.com/paulsevere/p2p/manifest"
 )
 
 // Broadcaster asds
@@ -40,17 +39,18 @@ func (b Broadcaster) StartRequestLoop() {
 
 func (b Broadcaster) FileRequests() {
 	for {
+		conn, _ := b.FileServer.Accept()
+		go FileRequestHandler(conn)
+		// go
+	}
+}
 
-		go func() {
-			conn, _ := b.FileServer.Accept()
-			println("Request Handled")
-			buff := make([]byte, 10)
-			conn.Read(buff)
-			num := string(buff)
-			println(num)
-			i, _ := strconv.Atoi(num)
-			segment := b.ReadSegment(i)
-			conn.Write(segment)
-		}()
+func FileRequestHandler(conn net.Conn) {
+	dec := gob.NewDecoder(conn)
+	for {
+
+		var a int64
+		dec.Decode(&a)
+		println(a)
 	}
 }

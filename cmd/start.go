@@ -15,8 +15,8 @@
 package cmd
 
 import (
-	"github.com/paulsevere/go-p2p/broadcaster"
-	"github.com/paulsevere/go-p2p/manifest"
+	"github.com/paulsevere/p2p/broadcaster"
+	"github.com/paulsevere/p2p/manifest"
 
 	"github.com/spf13/cobra"
 )
@@ -35,7 +35,7 @@ to quickly create a Cobra application.`,
 		m := manifest.ReadFromFile(args[0])
 		b := broadcaster.Init(m)
 		// for {
-		go b.StartRequestLoop()
+		// go b.StartRequestLoop()
 		b.FileRequests()
 	},
 }

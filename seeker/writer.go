@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/paulsevere/go-p2p/manifest"
-	"github.com/paulsevere/go-p2p/util"
+	"github.com/paulsevere/p2p/manifest"
+	"github.com/paulsevere/p2p/util"
 )
 
 func (s Seeker) WriteSegment(seg int, data []byte) {
