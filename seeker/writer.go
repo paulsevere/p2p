@@ -1,7 +1,6 @@
 package seeker
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/paulsevere/p2p/manifest"
@@ -9,11 +8,15 @@ import (
 )
 
 func (s Seeker) WriteSegment(seg int, data []byte) {
-	fmt.Printf("%v", data)
+	// fmt.Printf("%v\n", data)
 	util.CreateFile(s.OutPath)
-	file, _ := os.OpenFile(s.OutPath, 0666, os.ModePerm)
+	file, err1 := os.OpenFile(s.OutPath, 0666, os.ModePerm)
+	if err1 != nil {
+		println(err1.Error())
+	}
 	_, err := file.WriteAt(data, int64(seg*manifest.LEN))
 	if err != nil {
 		println("Error Writing file", err.Error())
 	}
+	file.Close()
 }

@@ -5,6 +5,7 @@ import (
 	"net"
 
 	"github.com/paulsevere/p2p/manifest"
+	"github.com/paulsevere/p2p/msg"
 )
 
 // Broadcaster asds
@@ -40,17 +41,26 @@ func (b Broadcaster) StartRequestLoop() {
 func (b Broadcaster) FileRequests() {
 	for {
 		conn, _ := b.FileServer.Accept()
-		go FileRequestHandler(conn)
+		go b.FileRequestHandler(conn)
 		// go
 	}
 }
 
-func FileRequestHandler(conn net.Conn) {
-	dec := gob.NewDecoder(conn)
-	for {
+func (b Broadcaster) FileRequestHandler(conn net.Conn) {
 
-		var a int64
-		dec.Decode(&a)
-		println(a)
+	dec := gob.NewDecoder(conn)
+	enc := gob.NewEncoder(conn)
+	m := msg.Message{}
+	dec.Decode(&m)
+	for _, n := range m.Segs {
+		// r, err := conn.Write(b.ReadSegment(n))
+		// if err != nil {
+		// 	println(err.Error())
+		// 	return
+		// }
+		// println("Sent back byes : ", r)
+		ret := msg.Content(n, b.ReadSegment(n))
+		enc.Encode(ret)
 	}
+
 }

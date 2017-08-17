@@ -7,6 +7,7 @@ import (
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/paulsevere/p2p/manifest"
+	"github.com/paulsevere/p2p/msg"
 )
 
 //
@@ -31,10 +32,21 @@ func New(hostname string, outpath string) Seeker {
 func (s Seeker) SeekAll() {
 	conn, _ := net.Dial("tcp", "localhost:8081")
 	enc := gob.NewEncoder(conn)
+	dec := gob.NewDecoder(conn)
+	missing := make([]int, 0)
 	for i := range s.Manifest.Segments {
-		println("Sending Request at ", i)
-		enc.Encode(i)
+		missing = append(missing, i)
 		// s.Seek(i)
+	}
+	enc.Encode(msg.Msg(missing))
+	for {
+		b := msg.Wrt{}
+		err := dec.Decode(&b)
+		if err != nil {
+			println(err.Error())
+			return
+		}
+		s.WriteSegment(b.Seg, b.Content)
 	}
 }
 

@@ -20,9 +20,16 @@ func New(path string) Manifest {
 	m := Manifest{Name: path, Segments: make([][16]byte, 0)}
 	file, _ := os.Open(path)
 	buff := make(bytes, LEN)
+	var n int
 	var err error
 	for i := 0; err == nil; i++ {
-		_, err = file.ReadAt(buff, int64(i*LEN))
+		n, err = file.ReadAt(buff, int64(i*LEN))
+		if err != nil {
+			println(err.Error())
+
+		}
+		println(n)
+
 		m.Segments = append(m.Segments, md5.Sum(buff))
 	}
 	return m
