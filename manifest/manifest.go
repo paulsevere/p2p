@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-const LEN int = 64
+const LEN int = 1024
 
 type bytes []byte
 
@@ -20,15 +20,15 @@ func New(path string) Manifest {
 	m := Manifest{Name: path, Segments: make([][16]byte, 0)}
 	file, _ := os.Open(path)
 	buff := make(bytes, LEN)
-	var n int
+
 	var err error
 	for i := 0; err == nil; i++ {
-		n, err = file.ReadAt(buff, int64(i*LEN))
+		_, err = file.ReadAt(buff, int64(i*LEN))
 		if err != nil {
-			println(err.Error())
+			// println(err.Error())
 
 		}
-		println(n)
+		// println(n)
 
 		m.Segments = append(m.Segments, md5.Sum(buff))
 	}
@@ -38,6 +38,7 @@ func New(path string) Manifest {
 func (m Manifest) WriteToFile(path string) {
 	createFile(path)
 	file, err := os.OpenFile(path, 0666, os.ModePerm)
+	defer file.Close()
 	if err != nil {
 		println(err.Error())
 		return

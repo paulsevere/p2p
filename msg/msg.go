@@ -21,3 +21,7 @@ func Content(n int, content []byte) Wrt {
 		Seg:     n,
 	}
 }
+
+func Done() Wrt {
+	return Wrt{Seg: -1}
+}

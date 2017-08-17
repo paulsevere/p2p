@@ -53,14 +53,10 @@ func (b Broadcaster) FileRequestHandler(conn net.Conn) {
 	m := msg.Message{}
 	dec.Decode(&m)
 	for _, n := range m.Segs {
-		// r, err := conn.Write(b.ReadSegment(n))
-		// if err != nil {
-		// 	println(err.Error())
-		// 	return
-		// }
-		// println("Sent back byes : ", r)
 		ret := msg.Content(n, b.ReadSegment(n))
 		enc.Encode(ret)
 	}
+
+	enc.Encode(msg.Done())
 
 }

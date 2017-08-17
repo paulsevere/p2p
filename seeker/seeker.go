@@ -44,7 +44,11 @@ func (s Seeker) SeekAll() {
 		err := dec.Decode(&b)
 		if err != nil {
 			println(err.Error())
-			return
+			break
+		}
+		if b.Seg == -1 {
+			println("Read Finished")
+			break
 		}
 		s.WriteSegment(b.Seg, b.Content)
 	}

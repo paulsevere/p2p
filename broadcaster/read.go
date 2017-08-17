@@ -11,7 +11,7 @@ func (b Broadcaster) ReadSegment(n int) []byte {
 	file, _ := os.Open(path)
 	buff := make([]byte, manifest.LEN)
 	readAt := int64(manifest.LEN * n)
-	println("Reading at : ", readAt)
+	// println("Reading at : ", readAt)
 	file.ReadAt(buff, readAt)
 	return buff
 
